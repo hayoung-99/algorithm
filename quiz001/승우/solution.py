@@ -1,6 +1,7 @@
 from typing import List
 
 from pydantic import BaseModel
+from numpy import argmin
 
 
 class Param(BaseModel):
@@ -31,9 +32,23 @@ def parse_input(path: str):
     )
 
 
-def get_min_distanc(distance_map: List[List[int]], start: int, end: int):
-    start_map = distance_map[start - 1]
-    simple_start_to_end = start_map[end - 1]
+def get_min_distance(distance_map: List[List[int]], _from: int, _to: int):
+    copied_map = list(distance_map)
+    limited_distance = copied_map[_from - 1][_to - 1]
+    distance = 0
+    s = _from
+    while distance < limited_distance:
+        copied_map[s - 1][s - 1] = 1000000
+        e = argmin(copied_map[s - 1]) + 1
+        distance += copied_map[s - 1][e - 1]
+        if e == _to:
+            return distance
+        s = e
+    return limited_distance
+
+
+def get_max_sector(param: Param, landing_fuel):
+
     return
 
 
@@ -42,3 +57,7 @@ def test_1():
     param, landing_fuel, distance_map = parse_input(input_1)
     path = param.path
     start = 1
+    print(get_min_distance(distance_map, 1, 3))
+
+
+test_1()
