@@ -1,7 +1,7 @@
 from typing import List
 
-from pydantic import BaseModel
 from numpy import argmin
+from pydantic import BaseModel
 
 
 class Param(BaseModel):
@@ -9,6 +9,11 @@ class Param(BaseModel):
     number_of_sector: int
     fuel_size: int
     path: List[int]
+
+
+class Result(BaseModel):
+    consume_fuel: int
+    own_flight_length: int
 
 
 def parse_input(path: str):
@@ -47,17 +52,44 @@ def get_min_distance(distance_map: List[List[int]], _from: int, _to: int):
     return limited_distance
 
 
-def get_max_sector(param: Param, landing_fuel):
+def get_consume_fuel_size(
+    param: Param, distance_map: List[List[int]], landing_fuel, start: int, end: int
+):
+    start_path = param.path[start]
+    start_landing_fuel = landing_fuel(start_path - 1)
+    own_path = param.path[:start] + param.path[end:]
+    s = 1
+    flight_fuel = 0
+    for e in own_path:
+        flight_fuel += distance_map[s - 1][e - 1]
+        s = e
+    return Result(
+        own_flight_length=len(own_path), consume_fuel=start_landing_fuel + flight_fuel
+    )
 
-    return
+
+def get_best_flight(param: Param, distance_map: List[List[int]], landing_fuel):
+    case_values = [
+        get_consume_fuel_size(param, distance_map, landing_fuel, i, j)
+        for i in range(1, param.full_length)
+        for j in range(i + 1, param.full_length)
+    ]
+    valid_flight = [c for c in case_values if c.consume_fuel <= param.fuel_size]
+    if not valid_flight:
+        return -1
+    best_result = min(
+        valid_flight,
+        key=lambda x: (-x.own_flight_length, x.consume_fuel),
+    )
+    return param.full_length - best_result.own_flight_length, best_result.consume_fuel
 
 
-def test_1():
-    input_1 = "../input1.txt"
-    param, landing_fuel, distance_map = parse_input(input_1)
-    path = param.path
-    start = 1
-    print(get_min_distance(distance_map, 1, 3))
+def solution(path: str):
+    param, landing_fuel, distance_map = parse_input(path)
+    result = get_best_flight(param, distance_map, landing_fuel)
+    print(result)
+    return result
 
 
-test_1()
+test_1 = solution("../input1.txt")
+test_2 = solution("../input2.txt")
