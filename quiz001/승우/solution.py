@@ -1,25 +1,36 @@
 from typing import List
 
-from numpy import argmin
-from pydantic import BaseModel
+import sys
 
 
-class Param(BaseModel):
+class Param:
     full_length: int
     number_of_sector: int
     fuel_size: int
     path: List[int]
 
+    def __init__(
+        self, full_length: int, number_of_sector: int, fuel_size: int, path: List[int]
+    ) -> None:
+        self.full_length = full_length
+        self.number_of_sector = number_of_sector
+        self.fuel_size = fuel_size
+        self.path = path
 
-class Result(BaseModel):
+
+class Result:
     consume_fuel: int
     own_flight_length: int
 
+    def __init__(self, consume_fuel: int, own_flight_length: int) -> None:
+        self.consume_fuel = consume_fuel
+        self.own_flight_length = own_flight_length
 
-def parse_input(path: str):
-    with open(path, "r") as file:
-        text = [line.replace("\n", "").split(" ") for line in file.readlines()]
-    data = [[int(n) for n in t] for t in text]
+
+def parse_input():
+    a, b, c = list(map(int, input().split()))
+    d = [list(map(int, sys.stdin.readline().strip().split())) for _ in range(b + 2)]
+    data = [[a, b, c], *d]
     head = data.pop(0)
     [full_length, number_of_sector, fuel_size] = head
     landing_fuel_values = data.pop(number_of_sector)
@@ -44,7 +55,10 @@ def get_min_distance(distance_map: List[List[int]], _from: int, _to: int):
     s = _from
     while distance < limited_distance:
         copied_map[s - 1][s - 1] = 1000000
-        e = argmin(copied_map[s - 1]) + 1
+        min_index = min(
+            [(i, v) for i, v in enumerate(copied_map[s - 1])], key=lambda x: x[1]
+        )[0]
+        e = min_index + 1
         distance += copied_map[s - 1][e - 1]
         if e == _to:
             return distance
@@ -84,12 +98,11 @@ def get_best_flight(param: Param, distance_map: List[List[int]], landing_fuel):
     return param.full_length - best_result.own_flight_length, best_result.consume_fuel
 
 
-def solution(path: str):
-    param, landing_fuel, distance_map = parse_input(path)
+def solution():
+    param, landing_fuel, distance_map = parse_input()
     result = get_best_flight(param, distance_map, landing_fuel)
     print(result)
     return result
 
 
-test_1 = solution("../input1.txt")
-test_2 = solution("../input2.txt")
+solution()
