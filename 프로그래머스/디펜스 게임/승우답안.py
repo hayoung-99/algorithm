@@ -1,15 +1,16 @@
 def solution(n, k, enemy):
-    my_soldier = int(n)
-    sum_func = lambda i: (i, sum(enemy[:i]))
-    acc_enemy = list(map(sum_func, range(len(enemy))))
-    sorted_acc_enemy = sorted(acc_enemy, key=lambda a: (a[1] - my_soldier, a[0]))
-    filter_func = lambda a: a[1] - my_soldier >= 0
-    filtered_acc_enemy = list(filter(filter_func, sorted_acc_enemy))
-    if not filtered_acc_enemy:
-        return len(enemy)
-    non_skill_index, non_skill_enemy = filtered_acc_enemy[0]
-    if not k:
-        return non_skill_index
-    print(non_skill_index, non_skill_enemy)
-    answer = 0
-    return answer
+    length = len(enemy)
+    if k > length:
+        return length
+
+    def calculate(index):
+        sum_enemy = sum(enemy[: index + 1])
+        max_sorted_enemy = sorted(enemy[: index + 1], reverse=True)
+        sum_skip_enemy = sum(max_sorted_enemy[:k])
+        defeated_enemy = sum_enemy - sum_skip_enemy
+        residul_soldier = n - defeated_enemy
+        return index, 0 if residul_soldier >= 0 else 1
+
+    sort_func = lambda x: (x[1], -x[0])
+    index, _ = sorted([calculate(i) for i in range(length)], key=sort_func)[0]
+    return index + 1
