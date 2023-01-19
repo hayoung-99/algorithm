@@ -1,11 +1,3 @@
-from time import time
-from random import randint
-
-enemy = [randint(1, 1000000) for x in range(1000000)]
-n = 1000000000
-k = 500000
-
-
 def solution(n, k, enemy):
     length = len(enemy)
     if k >= length:
@@ -19,10 +11,5 @@ def solution(n, k, enemy):
         residul_soldier = n - defeated_enemy
         return index if residul_soldier >= 0 else 0
 
-    index = sorted(map(calculate, range(k, length)), reverse=True)[0]
+    index = max(map(calculate, range(k, length)))
     return index + 1
-
-
-s = time()
-solution(n, k, enemy)
-print(time() - s)
