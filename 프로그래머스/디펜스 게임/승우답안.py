@@ -1,20 +1,23 @@
+from itertools import accumulate, takewhile
 from heapq import heappushpop, heappush
 
 
 def solution(n, k, enemy):
-    defeated_enemy = []
     skip_enemy = []
 
-    def round(e):
+    def round(sum_enemy, e):
         if len(skip_enemy) < k:
             heappush(skip_enemy, e)
+            return sum_enemy
         else:
             small_enemy = heappushpop(skip_enemy, e)
-            heappush(defeated_enemy, small_enemy)
+            return small_enemy + sum_enemy
 
-    for i, e in enumerate(enemy):
-        if sum(defeated_enemy) <= n:
-            round(e)
-        else:
-            return i - 1
-    return len(enemy)
+    iters = takewhile(lambda a: a <= n, accumulate(enemy, round))
+    result = list(iters)
+    if not result:
+        return len(enemy)
+    return len(result)
+
+
+print(solution(7, 3, [4, 2, 4, 5, 3, 3, 1]))
