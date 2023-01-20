@@ -1,18 +1,20 @@
-from itertools import accumulate
+from heapq import heappushpop, heappush
 
 
 def solution(n, k, enemy):
-    length = len(enemy)
-    if k >= length:
-        return length
+    defeated_enemy = []
+    skip_enemy = []
 
-    def calculate(value: tuple):
-        index, sum_enemy = value
-        max_sorted_enemy = sorted(enemy[: index + 1], reverse=True)
-        sum_skip_enemy = sum(max_sorted_enemy[:k])
-        defeated_enemy = sum_enemy - sum_skip_enemy
-        residul_soldier = n - defeated_enemy
-        return index if residul_soldier >= 0 else 0
+    def round(e):
+        if len(skip_enemy) < k:
+            heappush(skip_enemy, e)
+        else:
+            small_enemy = heappushpop(skip_enemy, e)
+            heappush(defeated_enemy, small_enemy)
 
-    index = max(map(calculate, enumerate(accumulate(enemy))))
-    return index + 1
+    for i, e in enumerate(enemy):
+        if sum(defeated_enemy) <= n:
+            round(e)
+        else:
+            return i - 1
+    return len(enemy)
