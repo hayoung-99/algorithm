@@ -13,11 +13,8 @@ def solution(n, k, enemy):
             small_enemy = heappushpop(skip_enemy, e)
             return small_enemy + sum_enemy
 
-    iters = takewhile(lambda a: a <= n, accumulate(enemy, round))
+    iters = takewhile(lambda a: a <= n, accumulate(enemy, round, initial=0))
     result = list(iters)
     if not result:
         return len(enemy)
-    return len(result)
-
-
-print(solution(7, 3, [4, 2, 4, 5, 3, 3, 1]))
+    return len(result) - 1
