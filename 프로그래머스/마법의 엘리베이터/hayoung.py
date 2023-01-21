@@ -2,6 +2,10 @@ def solution(storey):
     num = str(storey)
     answer = 0
 
+    if 6 <= int(num[0]) <= 9:
+        answer += 1
+        num = str((10 ** len(num)) - storey)
+
     while int(num) > 0:
         if len(num) == 1:
             answer += int(num)
