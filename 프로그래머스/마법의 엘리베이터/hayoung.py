@@ -2,18 +2,13 @@ def solution(storey):
     num = str(storey)
     answer = 0
 
+    # 555 -> 14 예외처리
     while int(num) > 0:
-        if len(num) == 1:
-            if 5 < int(num):
-                answer += 1
-                answer += (10 - int(num))
-            else:
-                answer += int(num)
-            break
-
         target = int(num[0])
-        if 5 <= int(num[1]):
-            target += 1
+        # 두 번째 자리에서 반올림
+        if len(num) > 1:
+            if 5 <= int(num[1]):
+                target += 1
 
         if 5 < target:
             answer += 1
