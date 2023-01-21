@@ -22,4 +22,4 @@ def solution(storey):
     return answer
 
 
-print(solution(16))
+print(solution(2554))
