@@ -1,12 +1,9 @@
-from math import fmod
-
-
 def solution(storey):
     def calculate(acc, storey):
-        r = int(fmod(storey, 10))
+        r = storey % 10
         if r > 5:
             r = 10 - r
-            storey += 10
+            storey += 10 - r
         acc += r
         storey = int(storey / 10)
         if storey < 10:
@@ -17,7 +14,3 @@ def solution(storey):
 
     answer = calculate(0, storey)
     return answer
-
-
-print(solution(2554))
-print(solution(16))
