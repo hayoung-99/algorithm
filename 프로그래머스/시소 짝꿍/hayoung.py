@@ -1,45 +1,30 @@
-def getLengthByBSearch(weights, idx, rate):
-    length = 0
-    target = weights[idx] * rate[0] / rate[1]
-    # print(f"현재 idx={idx}, target={target}")
-    left = idx + 1
-    right = len(weights) - 1
-
-    while left <= right:
-        mid = int((left + right) / 2)
-        if weights[mid] == target:
-            # 해당 target(중복) 개수 구하기
-            for l in range(mid, idx, -1):  # 왼쪽
-                if weights[l] == target:
-                    length += 1
-                else:
-                    break
-            for r in range(mid + 1, len(weights)):  # 오른쪽
-                if weights[r] == target:
-                    length += 1
-                else:
-                    break
-            # print(f"{target} 발견: 개수 ({length})개")
-            return length
-
-        elif weights[mid] > target:
-            right = mid - 1
-
-        else:
-            left = mid + 1
-
-    return length  # return 0
-
-
 def solution(weights):
     answer = 0
-    rates = [(1, 1), (3, 2), (4, 2), (4, 3)]  # 1:1, 2:3, 2:4, 3:4
+    overlap_dict = {}
+    rates = [(3, 2), (4, 2), (4, 3)]  # 2:3, 2:4, 3:4
 
-    weights.sort()
-
+    # 1-1) 중복 개수 구하기
     for i in range(len(weights)):
-        # 이진 탐색으로 쌍 구하기
+        if weights[i] not in overlap_dict:
+            overlap_dict[weights[i]] = 1
+        else:
+            overlap_dict[weights[i]] += 1
+
+    # 1-2) 1:1 비율의 짝꿍 구하기
+    for w in overlap_dict.values():
+        if w >= 2:
+            answer += int((w * (w - 1)) / 2)
+
+    # 2) 1:1 비율 외의 다른 비율의 짝꿍 구하기
+    for i in range(len(weights)):
         for rate in rates:
-            answer += getLengthByBSearch(weights, i, rate)
+            target = weights[i] * rate[0] / rate[1]  # 짝꿍이 될 수 있는 몸무게
+            if target in overlap_dict:  # 찾는 몸무게가 dict에 있다면 그 개수를 answer에 업데이트
+                answer += overlap_dict[target]
 
     return answer
+
+# 정리)
+# "1:1 비율"은 따로 중복 수를 구한 dict를 이용해 n*(n-1)/2로 짝꿍 수를 구한다.
+# "그 외 비율"은 weights 전체 for문 1번을 순회하여 자신과 짝꿍이 될 수 있는 몸무게를 구해서
+# 앞서 구한 중복 수 dict에 해당 몸무게가 있으면 그 사람들의 수를 답에 갱신 
