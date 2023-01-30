@@ -1,20 +1,21 @@
-from itertools import combinations, product
+from itertools import product
+from heapq import heapify, heappop
 
 distances = [2,3,4]
 
-def calculate_weight(weight_pair, distance_cases):
-  w1, w2 = weight_pair
-  def cal_func(d_pair):
-    d1, d2 = d_pair
-    return w1 * d1 == w2 * d2
-  return True if list(filter(cal_func, distance_cases)) else False
-
 def solution(weights):
-    distance_cases = list(product(distances, repeat=2))
-    sets = combinations(weights, 2)
-    cal_func= lambda p: calculate_weight(p, distance_cases)
-    answer = len(list(filter(cal_func, sets)))
-    return answer
+    ratios = list(set(map(lambda c: c[1]/c[0], product(distances, repeat=2))))
+    heaped = list(weights)
+    heapify(heaped)
+
+    def step(_):
+      cur = heappop(heaped)
+      valid_weights = list(map(lambda r: cur * r, ratios))
+      pairs = filter(lambda w: w in valid_weights, heaped)
+      return len(list(pairs))
+
+    pairs = list(map(step, weights))
+    return sum(pairs)
 
 
-solution([100,180,360,100,270])
+print(solution([100,180,360,100,270]))
