@@ -5,13 +5,13 @@ distances = [2,3,4]
 
 def count_same(acc, weight):
     if weight >= 2:
-      return comb(weight, 2)
+      return acc + comb(weight, 2)
     return acc
 
 def solution(weights):
     answer = 0
     weight_maps = {}
-    ratios = [(3, 2), (4, 2), (4, 3)]
+    ratios = [(3,2), (4,3), (4,2)]
 
     def count(weight):
       if weight not in weight_maps:
@@ -31,7 +31,7 @@ def solution(weights):
       acc_func = lambda r: calculate_ratio(r, weight)
       return sum(map(acc_func, ratios))
 
-    answer += reduce(count_same, weight_maps.values(), 0)
+    answer += reduce(count_same, weight_maps.values(), answer)
     answer += sum(map(count_other, weights))
     return answer
 
