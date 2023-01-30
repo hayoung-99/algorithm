@@ -1,21 +1,40 @@
-from itertools import product
-from heapq import heapify, heappop
+from functools import reduce
+from math import comb
 
 distances = [2,3,4]
 
+def count_same(acc, weight):
+    if weight >= 2:
+      return comb(weight, 2)
+    return acc
+
 def solution(weights):
-    ratios = list(set(map(lambda c: c[1]/c[0], product(distances, repeat=2))))
-    heaped = list(weights)
-    heapify(heaped)
+    answer = 0
+    weight_maps = {}
+    ratios = [(3, 2), (4, 2), (4, 3)]
 
-    def step(_):
-      cur = heappop(heaped)
-      valid_weights = list(map(lambda r: cur * r, ratios))
-      pairs = filter(lambda w: w in valid_weights, heaped)
-      return len(list(pairs))
+    def count(weight):
+      if weight not in weight_maps:
+        weight_maps[weight] = 1
+      else:
+        weight_maps[weight] += 1
 
-    pairs = list(map(step, weights))
-    return sum(pairs)
+    list(map(count, weights))
+
+    def calculate_ratio(ratio, weight):
+        cur = weight * ratio[0] / ratio[1]
+        if cur in weight_maps:
+          return weight_maps[cur]
+        return 0
+
+    def count_other(weight):
+      acc_func = lambda r: calculate_ratio(r, weight)
+      return sum(map(acc_func, ratios))
+
+    answer += reduce(count_same, weight_maps.values(), 0)
+    answer += sum(map(count_other, weights))
+    return answer
+
 
 
 print(solution([100,180,360,100,270]))
