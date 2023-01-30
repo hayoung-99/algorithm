@@ -1,48 +1,41 @@
-from itertools import filterfalse
+from itertools import product, chain
+from functools import reduce
+
+valid_discount_ratios = [10, 20, 30, 40]
+
+def calculate_user(user, emoticons):
+    ratio, budget = user
+    purchase_emoticons = list(filter(lambda e: e[0] >= ratio, emoticons))
+    if not purchase_emoticons:
+        return 1
+    def cost_func(emoticon):
+        cost = round(emoticon[1] * (100 - emoticon[0]) / 100)
+        return cost
+    purchase_cost = sum(map(cost_func, purchase_emoticons))
+    return 0 if purchase_cost >= budget else purchase_cost
+
+def accumulate_user(acc, cost):
+    if not cost:
+        return (acc[0] + 1, acc[1])
+    elif cost == 1:
+        return acc
+    else:
+        return (acc[0], acc[1]+ cost)
+
+def calculate_case(case, users):
+    emoticons = list(case)
+    user_func = lambda u: calculate_user(u, emoticons)
+    user_costs = list(map(user_func, users))
+    return reduce(accumulate_user, user_costs, (0,0))
 
 
 def solution(users, emoticons):
-    sum_emoticons = sum(emoticons)
-
-    def user_max_plan(user):
-        [ratio, budget] = user
-        max_budget = int(budget / (1 - ratio / 100))
-        if max_budget > sum_emoticons:
-            return False
-        return True
-
-    valid_ratio = [10, 20, 30, 40]
-    plus_users = list(filter(user_max_plan, users))
-    purchase_users = list(filterfalse(user_max_plan, users))
-    min_ratio = max(plus_users, key=lambda x: x[0])[0] if plus_users else 100
-    ## 바로 윗줄 구하는 식을 좀 더 구현해야함
-    print(min_ratio, purchase_users)
-
-    def sum_of_purchase(ratio, emoticon):
-        target_users = list(filter(lambda u: u[0] <= ratio, purchase_users))
-        return int((1 - ratio / 100) * emoticon * len(target_users))
-
-    def emoticon_plan(emoticon):
-        valid_ratios = [r for r in valid_ratio if r > min_ratio]
-        sum_func = lambda r: sum_of_purchase(r, emoticon)
-        return max(list(map(sum_func, valid_ratios))) if valid_ratios else 0
-
-    answer = [len(plus_users), max(list(map(emoticon_plan, emoticons)))]
+    len_emoticon = len(emoticons)
+    emoticon_ratio_cases = product(valid_discount_ratios, repeat=len_emoticon)
+    cases = map(lambda c: zip(c, emoticons), emoticon_ratio_cases)
+    case_func = lambda c: calculate_case(c, users)
+    results = map(case_func, cases)
+    answer = sorted(chain(results), key=lambda r: (r[0], r[1])).pop()
     return answer
 
 
-# print(solution([[40, 10000], [25, 10000]], [7000, 9000]))
-print(
-    solution(
-        [
-            [40, 2900],
-            [23, 10000],
-            [11, 5200],
-            [5, 5900],
-            [40, 3100],
-            [27, 9200],
-            [32, 6900],
-        ],
-        [1300, 1500, 1600, 4900],
-    )
-)
