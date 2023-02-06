@@ -3,8 +3,10 @@ def max_factor(n):
 
     for i in range(2, int(math.sqrt(n)) + 1):
         if n % i == 0:
-            factor = int(n / i)
-            return factor
+            max_factor = int(n / i)
+            # 포인트) 도로 길이는 최대 10억이지만 블록 수가 "최대 1천만"이므로, 1천만을 넘지 않는 최대 약수를 구한다.
+            if max_factor <= 10000000:
+                return max_factor
 
     return 0
 
@@ -22,4 +24,4 @@ def solution(begin, end):
         if factor:
             li[i - begin] = factor
 
-    return li
+    return li            
