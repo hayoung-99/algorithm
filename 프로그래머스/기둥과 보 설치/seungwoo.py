@@ -2,8 +2,8 @@ answer = []
 
 
 def is_relative_frame(build_frame, installed_frame):
-    [x, y, a, _] = build_frame
-    [x1, y1, a1] = installed_frame
+    [x, y, a] = build_frame[:3]
+    [x1, y1, a1] = installed_frame[:3]
     if a and a1:
         return (x1 + 1 == x or x1 == x + 1) and y == y1
     elif a:
@@ -14,8 +14,8 @@ def is_relative_frame(build_frame, installed_frame):
 
 
 def is_base_frame(build_frame, installed_frame):
-    [x, y, a, _] = build_frame
-    [x1, y1, a1] = installed_frame
+    [x, y, a] = build_frame[:3]
+    [x1, y1, a1] = installed_frame[:3]
     if a and a1:
         return y == y1 and (x + 1 == x1 or x1 + 1 == x)
     elif a:
@@ -28,26 +28,41 @@ def is_base_frame(build_frame, installed_frame):
 def inspect_remove_pillar(build_frame):
     relatives = list(filter(lambda f: is_relative_frame(build_frame, f), answer))
     bases = list(filter(lambda f: is_base_frame(build_frame, f), relatives))
-    if len(bases) == len(relatives):
+    if not build_frame[2] and not build_frame[1]:
+        return True
+    elif len(bases) == len(relatives):
         return True
     return False
 
 
-def inspect_remove_beam(build_frame):
+def has_base_pillars(build_frame):
     relatives = list(filter(lambda f: is_relative_frame(build_frame, f), answer))
     bases = list(filter(lambda f: is_base_frame(build_frame, f), relatives))
-    if len(bases) == len(relatives):
+    base_pillars = list(filter(lambda f: not f[2], bases))
+    return bool(base_pillars)
+
+
+def inspect_remove_beam(build_frame):
+    relatives = list(filter(lambda f: is_relative_frame(build_frame, f), answer))
+    beams = list(filter(lambda f: f[2], relatives))
+    has_pillar_beams = list(filter(has_base_pillars, beams))
+    bases = list(filter(lambda f: is_base_frame(build_frame, f), relatives))
+    base_pillars = list(filter(lambda f: not f[2], bases))
+    base_beams = list(filter(lambda f: f[2] and has_base_pillars(f), bases))
+    failed_beams = list(filter(lambda f: f not in base_beams and f not in has_pillar_beams, beams))
+    if failed_beams:
+        return False
+    elif len(relatives) == len(base_beams) + len(base_pillars):
         return True
     return False
 
 
 def inspect_install_pillar(build_frame):
-    [_, y, _, _] = build_frame
+    [_, y] = build_frame[:2]
     if not y:
         return True
     relatives = list(filter(lambda f: is_relative_frame(build_frame, f), answer))
     bases = list(filter(lambda f: is_base_frame(build_frame, f), relatives))
-    print(bases, build_frame)
     if bases:
         return True
     return False
@@ -94,38 +109,3 @@ def build(build_frame):
 def solution(n, build_frame):
     list(map(build, build_frame))
     return sorted(answer, key=lambda f: (f[0], f[1], f[2]))
-
-
-print(
-    solution(
-        5,
-        [
-            [1, 0, 0, 1],
-            [1, 1, 1, 1],
-            [2, 1, 0, 1],
-            [2, 2, 1, 1],
-            [5, 0, 0, 1],
-            [5, 1, 0, 1],
-            [4, 2, 1, 1],
-            [3, 2, 1, 1],
-        ],
-    )
-)
-
-print(
-    solution(
-        5,
-        [
-            [0, 0, 0, 1],
-            [2, 0, 0, 1],
-            [4, 0, 0, 1],
-            [0, 1, 1, 1],
-            [1, 1, 1, 1],
-            [2, 1, 1, 1],
-            [3, 1, 1, 1],
-            [2, 0, 0, 0],
-            [1, 1, 1, 0],
-            [2, 2, 0, 1],
-        ],
-    )
-)
