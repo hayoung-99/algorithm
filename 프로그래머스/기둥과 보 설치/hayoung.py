@@ -62,8 +62,7 @@ def solution(n, build_frame):
                 dxs, dys = [-1, -1, 0, 0, 0, 0], [1, 0, 1, 1, -1, 0]
                 frames = [1, 1, 0, 1, 0, 1]
             elif cmd[2] == 1:
-                dxs = [-1, 0, 0, 1, 1, 1]
-                dys = [0, 0, -1, 0, 0, -1]
+                dxs, dys = [-1, 0, 0, 1, 1, 1], [0, 0, -1, 0, 0, -1]
                 frames = [1, 0, 0, 0, 1, 0]
 
             for dx, dy, frame in zip(dxs, dys, frames):
