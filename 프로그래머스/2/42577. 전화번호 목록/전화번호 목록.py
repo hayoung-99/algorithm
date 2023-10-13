@@ -1,25 +1,15 @@
 def solution(phone_book):
     phone_dict = {}
-    
-    phone_book.sort(key=len)
-    min_length = len(phone_book[0])
-    
     for phone_num in phone_book:
-        min_length = min(min_length, len(phone_num))
+        phone_dict[phone_num] = True
         
     for phone_num in phone_book:
-        idx = min_length - 1
-        curr_partial = phone_num[:min_length]
-        
-        while idx < len(phone_num):
-            if curr_partial in phone_dict:
+        curr = ""
+        for num in phone_num:
+            curr += num
+            # curr의 접두어가 phone_dict에 있으면서 그 접두어가 자신 번호가 아닌 경우 => 접두사 발견!
+            if curr in phone_dict and curr != phone_num:
                 return False
-            else:
-                idx += 1
-                if idx == len(phone_num): # 부분 집합을 끝까지 돌았음에도 접두어를 발견하지 못한 경우 -> 해당 번호도 dict에 추가
-                    phone_dict[phone_num] = True
-                    break
-                curr_partial += phone_num[idx]
-                    
+            
     return True
-        
+            
