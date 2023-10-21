@@ -19,7 +19,7 @@ def solution(name):
             answer = min(answer, abs(i))
             break
 
-    for i in range(len(name)):
+    for i in range(len(name) // 2):
         # 오른쪽으로 진행하다가 왼쪽으로 터닝
         for k in range(i+1, len(name)):
             if name[k] != 'A':
