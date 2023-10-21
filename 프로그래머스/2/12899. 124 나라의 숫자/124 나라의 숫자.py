@@ -11,10 +11,8 @@ def solution(n):
             curr //= 3
             
     answer = ""
+    mapper = ["1", "2", "4"]
     for i in stack[::-1]:
-        if i == 3:
-            answer += "4"
-        else:
-            answer += str(i)
+        answer += mapper[i-1]
             
     return answer
