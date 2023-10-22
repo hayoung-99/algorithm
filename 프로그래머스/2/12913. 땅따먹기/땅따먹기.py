@@ -6,13 +6,11 @@ def solution(land):
             if col == 0:
                 dp[0][row] = land[0][row]
             else:
-                # print(col, row)
                 for i in range(4):
                     if i != row:
                         dp[col][row] = max(dp[col][row], land[col][row] + dp[col-1][i])
                         
     answer = 0
-    print(dp[-1])
     
     for i in dp[-1]:
         answer = max(answer, i)
