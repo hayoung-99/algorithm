@@ -1,36 +1,24 @@
-def getFactorial(n):
+def getFactorial(n):  # n!
     answer = 1
     for i in range(2, n+1):
         answer *= i
-        
     return answer
-    
+
 
 def solution(n, k):
     answer = []
-    candidates = [i+1 for i in range(n)]
+    numList = [i+1 for i in range(n)]
     
-    curr = k
-    while curr > 0:
-        if curr == 1:
-            answer += candidates
-            return answer
+    curr = k - 1
+    while curr >= 1:
+        fac = getFactorial(len(numList) - 1)
+        idx = curr // fac
+        answer.append(numList[idx])
+        numList.pop(idx)
         
-        fac = getFactorial(len(candidates) - 1)
+        curr = curr % fac
         
-        # 1. 나누어 떨어지는 경우
-        if curr % fac == 0:
-            answer.append(candidates[(curr // fac) - 1])
-            candidates.pop((curr // fac) - 1)
-            answer += candidates[::-1]
-            return answer
-        
-        else:
-            mock = curr // fac
-            rest = curr % fac
-            answer.append(candidates[mock])
-            candidates.pop(mock)
-            curr = rest
+    # 아직 넣지 않은 숫자가 있을 경우 그대로 이어 붙인다.
+    answer += numList
     
     return answer
-
