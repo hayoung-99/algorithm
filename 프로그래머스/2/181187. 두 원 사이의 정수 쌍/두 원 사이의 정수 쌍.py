@@ -1,13 +1,9 @@
 import math
 
-def maxNumber(n):
+def maxNumber(n, circleType):
     answer = int(math.sqrt(n))
-    return answer
-        
-        
-def maxNumber2(n):
-    answer = int(math.sqrt(n))
-    if answer * answer == n:
+    
+    if circleType == "r1" and answer * answer == n:
         return answer - 1
     return answer
 
@@ -16,17 +12,15 @@ def solution(r1, r2):
     # r2 내의 정수 쌍 구하기
     r2_answer = 0
     for x in range(1, r2):
-        yRange = maxNumber(r2 * r2 - x * x)
+        yRange = maxNumber(r2 * r2 - x * x, "r2")
         r2_answer += yRange
         
     # r1 내의 정수 쌍 구하기
     r1_answer = 0
     for x in range(1, r1):
-        yRange = maxNumber2(r1 * r1 - x * x)
+        yRange = maxNumber(r1 * r1 - x * x, "r1")
         r1_answer += yRange
-            
-    # print(r2_answer, r1_answer)
-            
+        
     # 4분면
     answer = (r2_answer - r1_answer) * 4
     
