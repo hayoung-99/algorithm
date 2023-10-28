@@ -1,14 +1,6 @@
 def solution(sequence):
-    minus_first = []
-    plus_first = []
-    
-    for i in range(len(sequence)):
-        if i % 2 == 0:
-            minus_first.append(-1)
-            plus_first.append(1)        
-        else:
-            minus_first.append(1)            
-            plus_first.append( -1)
+    minus_first = [-1 if i % 2 == 0 else 1 for i in range(len(sequence))]
+    plus_first = [1 if i % 2 == 0 else -1 for i in range(len(sequence))]
             
     # dp
     dp_minus_first = [0 for _ in range(len(sequence))]
@@ -35,12 +27,8 @@ def solution(sequence):
                 dp_plus_first[i] = curr_plus_first
                 
     answer = -999999
-    for m in dp_minus_first:
-        answer = max(answer, m)
-    for p in dp_plus_first:
-        answer = max(answer, p)
+    for m, p in zip(dp_minus_first, dp_plus_first):
+        answer = max(answer, m, p)
         
     return answer
-    
-                
-            
+         
