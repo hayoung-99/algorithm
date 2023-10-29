@@ -1,16 +1,5 @@
-# 1. 알파벳만 고를 수 있는 필터링
-# 2. 알파벳을 2글자씩 분리
-# 3. dict로 mix, max 구해서 자카드 유사도 구하기
-
-def getOnlyAlphabet(string):
-    string = string.upper()
-    answer = ""
-    for s in string:
-        if 'A' <= s and s <= 'Z':
-            answer += s
-    return answer
-
-
+# 1. 알파벳을 모두 대문자로 치환한 뒤, 구할 수 있는 영문쌍만 필터링
+# 2. dict로 mix, max 구해서 자카드 유사도 구하기
 def getJaccardSimilarity(str1, str2):
     str1_dict = {}
     str2_dict = {}
@@ -56,8 +45,6 @@ def getJaccardSimilarity(str1, str2):
 def solution(str1, str2):
     import math
     
-    # str1 = getOnlyAlphabet(str1)
-    # str2 = getOnlyAlphabet(str2)
     str1 = str1.upper()
     str2 = str2.upper()
     
@@ -73,7 +60,6 @@ def solution(str1, str2):
         if 'A' <= curr[0] <= 'Z' and 'A' <= curr[1] <= 'Z':
             str2_set.append(curr)
             
-        
     answer = getJaccardSimilarity(str1_set, str2_set)
     return math.floor(answer * 65536)
         
