@@ -1,7 +1,8 @@
 def solution(n, times): 
     answer = 0
-    s, e = 0, times[0] * n
+    s, e = 0, min(times) * n
     
+    # 이분탐색으로 최소한으로 걸리는 시간을 탐색해나간다.
     while s <= e:
         m = (s + e) // 2
         
