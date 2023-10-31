@@ -1,8 +1,6 @@
-import sys
-
 def solution(n, times): 
     answer = 0
-    s, e = 0, sys.maxsize
+    s, e = 0, times[0] * n
     
     while s <= e:
         m = (s + e) // 2
