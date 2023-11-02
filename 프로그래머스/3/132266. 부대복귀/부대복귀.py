@@ -11,14 +11,11 @@ def solution(n, roads, sources, destination):
     q = deque()
     q.append((destination, 0))
     distances = [-1 for _ in range(n+1)]
-    visited = [0 for _ in range(n+1)]
     distances[destination] = 0
-    visited[destination] = 1
     while q:
         curr, dist = q.popleft()
         for num in inj[curr]:
-            if not visited[num]:
-                visited[num] = 1
+            if distances[num] == -1:
                 distances[num] = dist + 1
                 q.append((num, dist+1))
                 
