@@ -8,6 +8,7 @@ def solution(n, roads, sources, destination):
         inj[e].append(s)
     
     # BFS
+    # 큐에 pop할 때가 아닌, push할 때 distances를 업데이트하는 게 포인트!
     q = deque()
     q.append((destination, 0))
     distances = [-1 for _ in range(n+1)]
