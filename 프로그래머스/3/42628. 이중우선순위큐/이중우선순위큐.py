@@ -1,86 +1,6 @@
-# import heapq
-
-# def deleteMaxHeapItem(q1, q1_dict, q2_dict):
-#     while q1:
-#         _, num = q1[0]
-#         if num not in q1_dict:
-#             if num in q2_dict:
-#                 q1_dict[num] = 1
-#                 heapq.heappop(q1)
-#                 continue
-#         elif num in q2_dict:
-#             if q1_dict[num] < q2_dict[num]:
-#                 q1_delete_dict[num] += 1
-#                 heapq.heappop(q1)
-#                 continue
-#         break
-
-        
-# def deleteMinHeapItem(q1, q1_dict, q2_dict):
-#     while q1:
-#         num = q1[0]
-#         if num not in q1_dict:
-#             if num in q2_dict:
-#                 q1_dict[num] = 1
-#                 heapq.heappop(q1)
-#                 continue
-#         elif num in q2_dict:
-#             if q1_dict[num] < q2_dict[num]:
-#                 q1_delete_dict[num] += 1
-#                 heapq.heappop(q1)
-#                 continue
-#         break
-        
-        
-# def solution(operations):
-#     min_heap = []
-#     max_heap = []
-#     min_heap_delete_dict = {}
-#     max_heap_delete_dict = {}
-    
-#     for op in operations:
-#         option, number = op.split()
-        
-#         # insert
-#         if option == "I":
-#             number = int(number)
-#             heapq.heappush(min_heap, number)
-#             heapq.heappush(max_heap, (-number, number))
-            
-#         # delete
-#         elif option == "D":
-#             # delete from max heap
-#             if number == "1":
-#                 deleteMaxHeapItem(max_heap, max_heap_delete_dict, min_heap_delete_dict)
-                    
-#                 if max_heap:
-#                     _, num = heapq.heappop(max_heap)
-#                     if num not in max_heap_delete_dict:
-#                         max_heap_delete_dict[num] = 1 
-#                     else:
-#                         max_heap_delete_dict[num] += 1  
-                
-#             # delete from min heap
-#             else:
-#                 deleteMinHeapItem(min_heap, min_heap_delete_dict, max_heap_delete_dict)
-#                 if min_heap:
-#                     num = heapq.heappop(min_heap)
-#                     if num not in min_heap_delete_dict:
-#                         min_heap_delete_dict[num] = 1 
-#                     else:
-#                         min_heap_delete_dict[num] += 1
-    
-#     deleteMaxHeapItem(max_heap, max_heap_delete_dict, min_heap_delete_dict)
-#     deleteMinHeapItem(min_heap, min_heap_delete_dict, max_heap_delete_dict)
-#     answer = [0, 0]
-    
-#     if max_heap:
-#         answer[0] = heapq.heappop(max_heap)[1]
-#     if min_heap:
-#         answer[1] = heapq.heappop(min_heap)
-        
-#     return answer
-
+# 두 힙의 동기화를 맞추는 것이 포인트
+# 1. 한 쪽의 힙이 비어 있다면 다른 힙도 비어 있어야 된다.
+# 2. 최대힙의 최댓값과 최소힙의 최솟값 중, 최댓값이 더 작을 경우 두 힙의 상황이 반전되었으므로 이는 곧 힙이 비었음을 의미
 
 import heapq
 
@@ -112,12 +32,8 @@ def solution(operations):
                         max_heap = []
                         
     answer = [0, 0]
-    if max_heap:
+    if max_heap:  # 한 쪽의 힙이 존재한다면 다른 힙도 존재한다.
         answer[0] = -max_heap[0]
-    if min_heap:
         answer[1] = min_heap[0]
         
     return answer
-                        
-                
-
