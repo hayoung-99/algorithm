@@ -1,5 +1,15 @@
 import math
 
+def convertToK(n, k):
+    if k < 10:
+        temp = ""
+        while n:
+            temp = str(n % k) + temp
+            n //= k
+        return temp
+    return str(n)
+
+
 def isPrime(n):
     if n == 1:
         return False
@@ -12,21 +22,10 @@ def isPrime(n):
 
 def solution(n, k):
     # k진법 변환 및 변환 결과를 str로 변환
-    if k < 10:
-        temp = ""
-        while n >= k:
-            r = n % k
-            temp = str(r) + temp
-            n //= k
-        temp = str(n) + temp
-        n = temp
-    else:
-        n = str(n)
-        
-    candidates = n.split("0")
+    n = convertToK(n, k)
     
     answer = 0
-    for c in candidates:
+    for c in n.split("0"):
         if c == "1" or c == "":
             continue
             
