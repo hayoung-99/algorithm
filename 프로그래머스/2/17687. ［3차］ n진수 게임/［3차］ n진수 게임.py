@@ -4,31 +4,20 @@ def convert(n, k, dt):
     
     curr = ""
     while n:
-        if n % k >= 10:
-            curr += dt[n % k]
-        else:
-            curr += str(n % k)
+        curr += dt[n % k]
         n //= k
         
     return curr[::-1]
 
             
 def solution(n, t, m, p):
-    
-    dt = {
-        10: 'A',
-        11: 'B', 
-        12: 'C',
-        13: 'D',
-        14: 'E',
-        15: 'F'
-    }
+    DIGITS = '0123456789ABCDEF'
     
     answer = ''
     curr = ''
     num = 0
     while len(curr) < t * m:
-        curr += convert(num, n, dt)
+        curr += convert(num, n, DIGITS)
         num += 1
         
     idx = p - 1
