@@ -7,7 +7,5 @@ function solution(n) {
         dp[i] = (dp[i-1] + dp[i-2]) % 1234567
     }
     
-    console.log(dp)
-    
     return dp[n]
 }
