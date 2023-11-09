@@ -1,25 +1,22 @@
 function solution(k, tangerine) {
-    const obj = {}
+    const map = new Map()
     
     for (let i = 0; i < tangerine.length; i++) {
-        if (!(tangerine[i] in obj)) {
-            obj[tangerine[i]] = 1
+        if (!map.get(tangerine[i])) {
+            map.set(tangerine[i], 1)
         } else {
-            obj[tangerine[i]] += 1
+            map.set(tangerine[i], map.get(tangerine[i]) + 1)
         }
     }
     
-    const values = Object.values(obj) 
-    values.sort((a, b) => a - b)
-    
-    let curr_reduce = 0
-    let reduce = tangerine.length - k
-    for (let i = 0; i < values.length; i++) {
-        curr_reduce += values[i]
-        if (curr_reduce > reduce) {
-            return (values.length - i)
+    const tangerine_nums = Array.from(map, (a) => a[1])
+    tangerine_nums.sort((a, b) => b - a)  // 내림차순
+
+    let curr_k = 0
+    for (let i = 0; i < tangerine_nums.length; i++) {
+        curr_k += tangerine_nums[i]
+        if (curr_k >= k) {
+            return i + 1
         }
     }
-    
-    return 0
 }
