@@ -1,15 +1,19 @@
-function getLCM(a, b) {
-    if (b % a === 0 || a % b === 0) {
-        return Math.max(a, b);
+function getGCD(a, b) {
+    let r
+    while (b !== 0) {
+        r = a % b
+        a = b
+        b = r
     }
-    
-    max = a * b
-    for (let i = Math.max(a, b); i <= max; i++) {
-        if (i % a === 0 && i % b === 0) {
-            return i
-        }
-    }
+
+    return a    
 }
+
+
+function getLCM(a, b) {
+    return (a * b) / getGCD(a, b)
+}
+
 
 function solution(arr) {
     let currLCM = arr[0]
