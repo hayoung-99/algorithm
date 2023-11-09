@@ -12,8 +12,6 @@ function getLCM(a, b) {
 }
 
 function solution(arr) {
-    arr.sort((a, b) => a < b)
-    
     let currLCM = arr[0]
     for (let i = 0; i < arr.length - 1; i++) {
         currLCM = getLCM(currLCM, arr[i+1])
