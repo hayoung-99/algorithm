@@ -1,6 +1,6 @@
 let answer = []
 
-function permutations(s, n, idx, curr, result) {
+function combination(s, n, idx, curr, result) {
     if (curr.length === n) {
         result.push(curr)
         return
@@ -11,7 +11,7 @@ function permutations(s, n, idx, curr, result) {
     }
     
     for (let i = idx; i < s.length; i++) {
-        permutations(s, n, i + 1, curr + s[i], result)
+        combination(s, n, i + 1, curr + s[i], result)
     }
 }
 
@@ -19,6 +19,7 @@ function permutations(s, n, idx, curr, result) {
 function solution(orders, course) {
     const map = new Map()
     
+    // 1. 각 order마다 오름차순 정렬 ex. 'xw' => 'wx'
     const orders_sort = []
     for (const order of orders) {
         let orderToArr = [...order]
@@ -26,11 +27,11 @@ function solution(orders, course) {
         orders_sort.push(orderToArr.join(''))
     }
     
+    // 2. 각 order마다 구할 수 있는 조합을 map으로 관리
     for (let order of orders_sort) {
         for (const i of course) {
             let temp = []
-            permutations(order, i, 0, "", temp)
-            // console.log(order, i, temp)
+            combination(order, i, 0, "", temp)
             
             for (const t of temp) {
                 if (!map.get(t)) {
@@ -42,6 +43,7 @@ function solution(orders, course) {
         }
     }
     
+    // 3. 코스요리 개수와 일치하면서 2명 이상이 주문을 했는지 확인
     const info = new Map()
     for (const c of course) {
         let max = 0
@@ -62,6 +64,7 @@ function solution(orders, course) {
         }
     }
     
+    // 4. 오름차순 정렬
     answer.sort()
     
     return answer
