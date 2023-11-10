@@ -9,13 +9,7 @@ function solution(want, number, discount) {
             curr.set(discount[i], curr.get(discount[i]) + 1)
         }
     }
-    
-    // 첫 열흘에 모두 세일하는 경우
-//     for (let i = 0; i < want.length; i++) {
-//         if (curr.get(discount[want[i]]) >= number[i]) {
-            
-//         }
-//     }
+
     let answer = 0
     for (let i = 0; i <= discount.length - 10; i++) {
         let isExist = true
