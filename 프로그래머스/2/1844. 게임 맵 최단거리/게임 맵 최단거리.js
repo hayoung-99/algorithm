@@ -7,11 +7,6 @@ function bfs(maps) {
     const col = maps.length
     const row = maps[0].length
     
-    // // 도착점이 막혀 있는 경우    
-    // if (maps[col - 2][row - 1] === 0 && maps[col - 1][row - 2] === 0) {
-    //     return -1
-    // }
-    
     // 큐 생성
     let start = 0
     let end = 0
@@ -24,7 +19,7 @@ function bfs(maps) {
         visited.push(Array.from({ length: row }, () => 0))
     }
     
-    // (0, 0) start
+    // (0, 0) push
     queue[end] = [0, 0, 1]
     visited[0][0] = 1
     end = (end + 1) % (col * row)
