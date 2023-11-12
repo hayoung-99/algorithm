@@ -1,15 +1,7 @@
 // 1. 가장 처음으로 오는 0을 1로 설정한다. 
 // 2. 그 뒤의 (뒤가 있다면) 1을 0으로 바꾼다.
 function getBit(n) {
-    let temp = ''
-    
-    while (n) {
-        temp = temp + (n % 2)
-        n = parseInt(n / 2)
-    }
-    
-    // reverse
-    return '0' + temp.split("").reverse().join("")
+    return ('0' + n.toString(2))
 }
 
 
