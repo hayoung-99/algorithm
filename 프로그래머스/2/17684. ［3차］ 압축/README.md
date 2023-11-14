@@ -1,10 +1,10 @@
 # [level 2] [3차] 압축 - 17684 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/17684) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/17684?language=javascript) 
 
 ### 성능 요약
 
-메모리: 10.2 MB, 시간: 0.38 ms
+메모리: 33.5 MB, 시간: 0.28 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2023년 11월 5일 11:36:50
+2023년 11월 3일 3:29:47
 
 ### 문제 설명
 
