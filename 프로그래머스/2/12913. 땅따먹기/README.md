@@ -1,10 +1,10 @@
 # [level 2] 땅따먹기 - 12913 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12913) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12913?language=javascript) 
 
 ### 성능 요약
 
-메모리: 43.2 MB, 시간: 561.43 ms
+메모리: 83.6 MB, 시간: 55.67 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2023년 10월 0일 10:51:46
+2023년 11월 5일 12:1:16
 
 ### 문제 설명
 
