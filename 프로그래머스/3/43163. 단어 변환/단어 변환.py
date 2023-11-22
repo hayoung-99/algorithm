@@ -23,6 +23,9 @@ def solution(begin, target, words):
                 levels[nextWord] = levels[curr] + 1
                 q.append(nextWord)
                 
+        if target in levels:
+            break
+                
     if target not in levels:
         return 0
     return levels[target]
