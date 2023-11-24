@@ -4,8 +4,8 @@ def solution(files):
     head_and_number = []
     for i, file in enumerate(files):
         # head, number 추출
-        strings = re.split(r'[0-9]', file)
-        numbers = [num for num in re.split(r'[^0-9]', file) if num != '']
+        strings = re.split(r'[0-9]+', file)
+        numbers = [num for num in re.split(r'[^0-9]+', file) if num != '']
         
         head_and_number.append((strings[0], int(numbers[0]), i))
 
