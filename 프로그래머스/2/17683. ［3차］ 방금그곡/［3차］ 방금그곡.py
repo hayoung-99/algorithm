@@ -1,3 +1,5 @@
+import math
+
 def calculatePlaytime(s, e):
     s_hour, s_minute = map(int, s.split(':'))
     e_hour, e_minute = map(int, e.split(':'))
@@ -39,26 +41,18 @@ def findall(target, notes):
 
 def solution(m, musicinfos):
     musics = []
+    
     for mi in musicinfos:
         s, e, name, notes = mi.split(',')
-        
-        # 재생 시간만큼 notes 반복
         playtime = calculatePlaytime(s, e)
         notes = notesToArray(notes)
         
         if playtime < len(notes):
             played_notes = ''.join(notes[:playtime])
         else:
-            played_notes = list(notes)
-            while playtime > len(played_notes):
-                played_notes += notes
-            played_notes = ''.join(played_notes[:playtime])
+            played_notes = ''.join(list(notes) * math.ceil(playtime / len(notes)))
 
-        offsets = findall(m, played_notes)
-        if not offsets:
-            continue
-            
-        for offset in offsets:
+        for offset in findall(m, played_notes):
             if offset + len(m) <= len(played_notes):
                 if offset + len(m) == len(played_notes) or played_notes[offset + len(m)] != '#':
                     musics.append((playtime, name))
@@ -68,5 +62,4 @@ def solution(m, musicinfos):
     if not musics:
         return "(None)"
     return musics[0][1]
-        
-        
+         
