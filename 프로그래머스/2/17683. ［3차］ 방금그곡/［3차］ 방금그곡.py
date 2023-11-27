@@ -1,5 +1,3 @@
-import re
-
 def calculatePlaytime(s, e):
     s_hour, s_minute = map(int, s.split(':'))
     e_hour, e_minute = map(int, e.split(':'))
@@ -60,7 +58,6 @@ def solution(m, musicinfos):
         if not offsets:
             continue
             
-        # 뭔가 여기서 문제인듯..
         for offset in offsets:
             if offset + len(m) <= len(played_notes):
                 if offset + len(m) == len(played_notes) or played_notes[offset + len(m)] != '#':
